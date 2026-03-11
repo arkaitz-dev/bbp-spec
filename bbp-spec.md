@@ -4,7 +4,7 @@
 
 **Version:** 1.0-draft-r39  
 **Date:** 2026-03-12  
-**Author:** Arkaitz Múgica <me@arkaitz.dev> 
+**Author:** Arkaitz Múgica <me@arkaitz.dev>  
 **Status:** Working Draft
 
 ---
