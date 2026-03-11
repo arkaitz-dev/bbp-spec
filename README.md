@@ -63,5 +63,5 @@ The hypothesis is: a neuro-symbolic system built on this specific combination wi
 
 ## Explore Further
 
-Read the [full specification (draft-r39)](https://github.com/arkaitz-dev/bbp-spec/bbp-spec.md) to explore the complete token format, the 29-case inventory, the *Inverted Ground Truth* corpus generation methodology, the axiomatic validation framework, and the staged training roadmap.
+Read the [full specification (draft-r39)](https://github.com/arkaitz-dev/bbp-spec/blob/master/bbp-spec.md) to explore the complete token format, the 29-case inventory, the *Inverted Ground Truth* corpus generation methodology, the axiomatic validation framework, and the staged training roadmap.
 
