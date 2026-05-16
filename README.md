@@ -31,6 +31,24 @@ BBP does not eliminate natural language; it confines it to the human interface l
 
 ---
 
+## The Core Engine as Pre-Verbal Substrate
+
+A complementary architectural reading of the same design: the Core Engine, by manipulating LEMMAs and their compositional relations directly, occupies a functional position analogous to what cognitive science calls **pre-verbal thought** — the substrate where concepts are handled before they are clothed in any particular language. The Frontier Translator then plays the role of the verbal-articulation layer, rendering Core Engine output into natural language and making it accessible to human interlocutors.
+
+This reading suggests that several BBP design decisions — cross-linguistic LEMMA deduplication, preposition elimination, broad synsets rather than fine senses — implement what Quian Quiroga has called *productive forgetting*: the architectural enforcement of sparseness that the cognitive-science literature identifies as the precondition of abstraction, not a deficit of representational power. Following this principle, the Core Engine should be **just large enough** to internalise the compositional regularities of the BBP space, and no larger: optimal at the elbow of the compositional generalisation curve, not at its ceiling. The scaling-law intuition "*larger is better*" applies to the LLM layers; it does not apply unconditionally to the Core Engine.
+
+---
+
+## The Asymmetric LLM↔Core Engine Dialogue
+
+The same architecture suggests an operating mode beyond the linear NL→BBP→Core Engine→BBP→NL pipeline: an **asymmetric iterative dialogue** between a natural-language LLM and a Core Engine, mediated by BBP. The LLM proposes hypotheses in natural language; the Core Engine validates them structurally against axiomatic constraints and emits typed critiques; the LLM ingests the critique and refines. The loop continues until convergence.
+
+This differs from current chain-of-thought in a critical way. In current systems the generator and the verifier are the same model, sharing systematic errors that self-consistency methods can attenuate but not eliminate. In the asymmetric dialogue, the verifier has **architecturally different failure modes** from the generator: each layer detects what the other layer cannot detect by construction. The closest natural analogue is Kahneman's System 1 / System 2 distinction, with one refinement — the two systems are *architecturally* separate, integrated by protocol rather than by mechanism.
+
+These claims are architectural readings, not phenomenological claims. They do not commit the specification to any thesis about consciousness, agency, or subjective experience. They commit it to one structural claim: the BBP architecture is not merely an efficient representation; it is *structurally homologous* to the leading functional decomposition of human cognition into pre-verbal substrate and verbal articulation. See §1.12 of the specification for the full treatment, falsifiability conditions, and explicit epistemic status.
+
+---
+
 ## Beyond Conversation: Reasoning and Code
 
 BBP extends beyond standard communication to formalize complex AI tasks natively:

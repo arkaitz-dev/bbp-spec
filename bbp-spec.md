@@ -468,6 +468,65 @@ What remains genuinely open is empirical: whether a transformer can learn to exp
 
 **Epistemic status:** This section presents a theoretically grounded working hypothesis, not an established fact. All claims about Core Engine behavior are predictions conditional on §1.8. They are falsifiable by the benchmarks defined in §15.5.5 and Appendix H.
 
+### 1.12 The Core Engine as Pre-Verbal Substrate and the Asymmetric Dialogue
+
+Sections §1.10 and §1.11 articulate what BBP enables in terms of cross-linguistic semantic geometry and cognitive capacity. This section names a complementary architectural reading that follows from the same design but operates at a different level: the functional role of the Core Engine within a broader cognitive system that includes natural-language LLMs as collaborators rather than as predecessors to be replaced.
+
+#### 1.12.1 The Core Engine as functional analogue of pre-verbal cognition
+
+Human cognition appears to operate on at least two distinct registers: a substrate that manipulates concepts and relations directly (variously called intuition, pre-verbal thought, or abstract cognition), and a verbal-articulation layer that renders the products of that substrate communicable. Introspective testimony (Vygotsky, Wittgenstein, Damasio) and contemporary cognitive science (Quian Quiroga's work on concept cells, Dehaene's Global Workspace Theory, the broader literature on sub-lexical processing) converge on the observation that the verbal layer formalises and completes pre-verbal content rather than originating it. A thought is not fully the thinker's own until it is articulated; but articulation does not create thought ex nihilo — it shapes and stabilises content that was already structured at a sub-lexical level.
+
+The BBP Core Engine, considered functionally, sits closer to this pre-verbal substrate than to a verbal-articulation layer. It manipulates concepts (LEMMA) and their compositional relations (FEATURES, structure) directly, without surface-form intermediation. Whatever the Core Engine processes is not in any natural language: it is in the typed substrate. The Frontier Translator (Layer 1) then takes the role of the verbal-articulation layer, rendering Core Engine output into natural language and making it accessible to human interlocutors.
+
+This analogy is structural, not phenomenological. The claim is that **the functional position the Core Engine occupies in the BBP architecture corresponds to the functional position occupied by pre-verbal cognition in current models of human thought**. Whether functional correspondence at this level entails any deeper correspondence is an open question this specification neither claims nor denies (see §1.12.5).
+
+#### 1.12.2 Productive forgetting as architectural principle
+
+Concept cells in the human medial temporal lobe represent identities sparsely and abstractly: a single neuron may respond to a given person in photographs, in textual mentions, and in spoken references, invariant to surface form. Quian Quiroga has argued that this sparseness is functional: total recall, as in the documented case of Solomon Shereshevsky, prevents abstraction rather than enabling it. Forgetting surface detail is the precondition of conceptual thought, not a defect of the system.
+
+BBP implements an architectural analogue of this principle, though it is not named as such elsewhere in this document. The LEMMA is deliberately surface-stripped:
+
+- **Cross-linguistic deduplication.** *perro*, *dog*, *txakurra*, *犬*, and *كلب* collapse to a single LEMMA ID. The system forgets that there are multiple surface forms; it remembers only the concept.
+- **Preposition and particle elimination (§12.0.2).** Relational surface markers are absorbed into the case field of the nominal token. The system forgets the surface marker; it remembers the relation.
+- **Broad synsets rather than fine senses (§1.4).** The dictionary collapses near-equivalent senses into single IDs disambiguated by structural context. The system forgets fine distinctions stored as separate lexemes; it remembers them as composable structural positions.
+
+These design decisions, taken individually, are usually justified on grounds of efficiency or cross-linguistic uniformity. Considered together, they constitute a coherent principle: **the Core Engine is forced to forget exactly the kind of surface information that the cognitive-science literature identifies as the obstacle to abstraction**. The architectural choice is therefore not merely engineering economy. It is the implementation of a cognitive hypothesis: that the substrate of compositional thought must be sparse, and that sparseness must be enforced by the representation, not merely encouraged by training.
+
+#### 1.12.3 Core Engine size as functional, not merely economic, decision
+
+A consequence follows that is not currently explicit in §15.5. If productive forgetting is a feature, then a Core Engine large enough to *memorise* the training distribution rather than *learn its compositional structure* loses precisely the property that justifies its existence. The familiar scaling-law intuition — *larger is better* — applies to the LLM layers (where surface fluency benefits from scale) and to the Frontier Translator (where idiomatic coverage benefits from scale). It does not apply unconditionally to the Core Engine.
+
+The Core Engine SHOULD be just large enough to internalise the compositional regularities of the BBP space, and no larger. A Core Engine that can memorise specific training instances behaves, with respect to compositional generalisation, more like a conventional LLM than like the architecture this document specifies. The compositional generalisation benchmark (§1.3, Appendix H.8) is therefore not only a validation of BBP's promise — it is also a diagnostic for over-parameterisation. A Core Engine that scores well on memorisation tasks but degrades on held-out compositional combinations is too large. The optimal size is at the elbow of the curve, not at its ceiling.
+
+This reframes the Core Engine sizing decision: it is not "as large as compute permits", as for current frontier LLMs. It is "as large as compositional learning saturates, no more". The §15.5.5 staged validation gates SHOULD include explicit measurement of memorisation-vs-generalisation balance, and Core Engine scale-up SHOULD be gated on compositional generalisation continuing to improve, not on aggregate loss continuing to decrease.
+
+#### 1.12.4 The asymmetric LLM↔Core Engine dialogue as reasoning engine
+
+The Layered Architecture (§1.2) describes Layer 1 (Frontier Translator) and Layer 2 (Core Engine) as a pipeline: NL → BBP → Core Engine → BBP → NL. This linear description is correct for unidirectional tasks (translation, rendering, single-shot question answering). It is incomplete as a description of how the architecture can be operated for complex reasoning tasks.
+
+A more powerful operating mode is **asymmetric iterative dialogue** between a natural-language LLM and a Core Engine, mediated by BBP. The LLM proposes hypotheses, sketches, or candidate solutions in natural language. These are translated to BBP-IR by the Frontier Translator. The Core Engine validates them against axiomatic constraints (§13.2.1), identifies structural failures (unbound references, type violations, unsupported inferential steps, mis-scoped quantifiers, unsupported confidence levels in BBP-CoT chains), and emits a structured critique in BBP. The critique is rendered back to natural language by the Frontier Translator. The LLM ingests the critique and refines. The loop continues until convergence.
+
+This differs from current chain-of-thought reasoning in a critical way. In current systems, the generator and the validator are the same model: the verifier's beliefs are the generator's beliefs, and they share systematic errors. Self-consistency methods (ensembles, majority vote) reduce variance but not bias. In an LLM↔Core Engine dialogue, **the verifier has architecturally different failure modes from the generator**. The LLM's failures are statistical (plausibility without grounding, surface coherence masking semantic error). The Core Engine's failures are structural (formal validity without pragmatic relevance, axiomatic correctness without communicative purpose). Each layer detects what the other layer cannot detect by construction.
+
+The architecture therefore enables a form of reasoning that neither layer can produce alone:
+
+- The LLM contributes hypothesis generation, cross-domain association, pragmatic interpretation, and the verbalisation that completes pre-verbal content (§1.12.1).
+- The Core Engine contributes compositional validation, type checking, explicit epistemic accounting (BBP-CoT), and exploration of the compositional space beyond the human-lexicalised distribution (§1.10.2).
+- The dialogue contributes mutual error correction across architecturally non-redundant failure modes.
+
+The closest natural analogue is the Kahneman System 1 / System 2 distinction, with one important refinement: the two systems are *architecturally* separate, communicating through an explicit typed channel (BBP), rather than co-resident in a single substrate. The integration is by protocol, not by mechanism.
+
+#### 1.12.5 Epistemic status
+
+The claims in this section are architectural readings of design decisions made elsewhere in this specification. They are not empirical predictions in the same class as §1.8 or §1.11. Specifically:
+
+- The functional analogy between the Core Engine and human pre-verbal cognition (§1.12.1) is a structural observation, not a phenomenological claim. Whether functional correspondence at this level entails any deeper form of cognitive emergence — and what status, if any, such emergence would have — is an open question this specification does not adjudicate.
+- The productive forgetting principle (§1.12.2) is a coherent re-reading of design decisions taken on independent grounds. It is testable in the sense that if any of the relevant deduplication mechanisms were relaxed, compositional generalisation should degrade measurably.
+- The Core Engine sizing claim (§1.12.3) is empirically falsifiable by the compositional generalisation benchmark (Appendix H.8) measured across multiple Core Engine scales.
+- The asymmetric dialogue claim (§1.12.4) is empirically falsifiable: an LLM↔Core Engine system should outperform a same-total-parameter LLM-only system on reasoning benchmarks that stress composition and consistency (FOLIO, LogiQA-hard, multi-step planning, theorem proving). If it does not, the architectural advantage of asymmetric dialogue is not real.
+
+These four claims do not commit the specification to any thesis about consciousness, agency, or subjective experience. They commit it to one stronger claim than the rest of §1 makes: that the BBP architecture is not merely an efficient representation, but is *structurally homologous* to the leading functional decomposition of human cognition into pre-verbal substrate and verbal articulation. Whether that homology produces consequences beyond capability is left as an open empirical question.
+
 ---
 
 ## 2. Architecture Overview (BBP-64)
