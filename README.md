@@ -1,6 +1,6 @@
 # BBP: Basque Binary Protocol
 ### A Neuro-Symbolic Interlingua for Machine Cognition and Inter-Agent Communication
-**Status:** Working Draft (v1.0-draft-r39) — Theoretical Specification. No implementation exists yet.
+**Status:** Working Draft (v1.0-draft-r40) — Theoretical Specification. No implementation exists yet.
 
 Natural language was not designed for machines. It is ambiguous, context-dependent, and relies heavily on positional syntax. Yet, modern AI architecture forces models to use human text as their internal representation for everything: prompts, JSON APIs, inter-agent communication, and Chain-of-Thought reasoning.
 
