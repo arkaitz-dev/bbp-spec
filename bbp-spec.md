@@ -2,7 +2,7 @@
 
 ## Neuro-Symbolic Interlingua for Machine Cognition and Inter-Agent Communication
 
-**Version:** 1.0-draft-r39  
+**Version:** 1.0-draft-r40  
 **Date:** 2026-03-12  
 **Author:** Arkaitz Múgica <me@arkaitz.dev>  
 **Status:** Working Draft
