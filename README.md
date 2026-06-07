@@ -1,6 +1,6 @@
 # BBP: Basque Binary Protocol
 ### A Neuro-Symbolic Interlingua for Machine Cognition and Inter-Agent Communication
-**Status:** Working Draft (v1.0-draft-r40) — Theoretical Specification. No implementation exists yet.
+**Status:** Working Draft (v1.0-draft-r41) — Theoretical Specification. No implementation exists yet.
 
 Natural language was not designed for machines. It is ambiguous, context-dependent, and relies heavily on positional syntax. Yet, modern AI architecture forces models to use human text as their internal representation for everything: prompts, JSON APIs, inter-agent communication, and Chain-of-Thought reasoning.
 
@@ -73,7 +73,7 @@ BBP-64 extends this universally, incorporating typological coverage from languag
 
 ## Epistemic Status
 
-BBP v1.0-draft-r40 is a **theoretical specification and falsifiable hypothesis**. No toolchain has been implemented. No Frontier Translator has been trained. No Core Engine exists. No empirical data supports or refutes the architecture's core claims.
+BBP v1.0-draft-r41 is a **theoretical specification and falsifiable hypothesis**. No toolchain has been implemented. No Frontier Translator has been trained. No Core Engine exists. No empirical data supports or refutes the architecture's core claims.
 
 The specification defines a micro-experiment (Stage 0) as the first empirical test — a 125M-parameter model trained on a domain-restricted corpus of 50K BBP token pairs, with explicit go/no-go criteria and documented fallback paths if the architecture fails to validate.
 
@@ -81,5 +81,5 @@ The hypothesis is: a neuro-symbolic system built on this specific combination wi
 
 ## Explore Further
 
-Read the [full specification (draft-r40)](https://github.com/arkaitz-dev/bbp-spec/blob/master/bbp-spec.md) to explore the complete token format, the 29-case inventory, the *Inverted Ground Truth* corpus generation methodology, the axiomatic validation framework, and the staged training roadmap.
+Read the [full specification (draft-r41)](https://github.com/arkaitz-dev/bbp-spec/blob/master/bbp-spec.md) to explore the complete token format, the 29-case inventory, the *Inverted Ground Truth* corpus generation methodology, the axiomatic validation framework, and the staged training roadmap.
 
