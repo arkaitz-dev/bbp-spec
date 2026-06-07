@@ -2,7 +2,7 @@
 
 ## Neuro-Symbolic Interlingua for Machine Cognition and Inter-Agent Communication
 
-**Version:** 1.0-draft-r40  
+**Version:** 1.0-draft-r41  
 **Date:** 2026-03-12  
 **Author:** Arkaitz Múgica <me@arkaitz.dev>  
 **Status:** Working Draft
@@ -526,6 +526,20 @@ The claims in this section are architectural readings of design decisions made e
 - The asymmetric dialogue claim (§1.12.4) is empirically falsifiable: an LLM↔Core Engine system should outperform a same-total-parameter LLM-only system on reasoning benchmarks that stress composition and consistency (FOLIO, LogiQA-hard, multi-step planning, theorem proving). If it does not, the architectural advantage of asymmetric dialogue is not real.
 
 These four claims do not commit the specification to any thesis about consciousness, agency, or subjective experience. They commit it to one stronger claim than the rest of §1 makes: that the BBP architecture is not merely an efficient representation, but is *structurally homologous* to the leading functional decomposition of human cognition into pre-verbal substrate and verbal articulation. Whether that homology produces consequences beyond capability is left as an open empirical question.
+
+#### 1.12.6 Multi-component generalisation and the creativity/precision dial
+
+The asymmetric dialogue described in §1.12.4 is presented in its minimal form: two architecturally distinct systems — a natural-language LLM and a Core Engine — exchanging typed critiques through BBP until convergence. This minimal form is what the falsifiability claim of §1.12.5 commits to. The pattern itself, however, admits a natural generalisation that this section names so that subsequent operational work can refer to it without reinventing terminology.
+
+The generalisation has three components.
+
+**Multiple BBP-native engines in the cognitive layer.** Layer 2 (§1.2) can host a *primary* Core Engine — trained extensively, with a broad knowledge base — coexisting with a *matrix* of smaller Core Engines, each trained on differentially curated summaries of the same conceptual material. The matrix engines are intentionally non-identical in their conceptual abstractions: variation among them does not arise from stochastic training noise but from deliberate curriculum differentiation, so that each matrix engine occupies a distinct position in the space of plausible conceptualisations of the same content. The primary engine acts simultaneously as participant (contributing its own response) and as moderator (querying the matrix and aggregating responses). This collapses two roles that mixture-of-experts architectures typically separate (router and experts) into a single component informed by the same knowledge it is integrating.
+
+**Intra-system BBP-binary deliberation.** Communication between the primary engine and the matrix is conducted entirely in BBP binary, without any Frontier Translator round-trip. This is the same mechanism specified for inter-agent communication in Layer 3 (§1.2), applied here intra-system as the medium of internal deliberation rather than as a wire protocol between distinct systems. Frontier Translators remain confined to the boundary with natural language. The architectural consequence is that BBP functions not only as the representational substrate of the Core Engine (what it thinks *in*) but also as the deliberative medium across cognitive components (what they think *through*).
+
+**Creativity/precision aggregation dial.** The aggregation of matrix responses by the primary engine is parameterised by an explicit dial. In the *convergence* regime, agreement across matrix engines is treated as the signal and outliers as noise — the standard ensemble logic for reducing variance and increasing accuracy. In the *divergence* regime, agreement is treated as the prior and disagreement as the signal of interest — outliers are preserved and surfaced as alternative framings rather than smoothed away. The same components, the same protocol, and the same matrix serve both regimes; only the aggregation policy differs. The boundary LLM may modulate the dial across iterations of the asymmetric dialogue, producing a double-diamond pattern in which early iterations are biased toward divergence to open the candidate space and subsequent iterations are biased toward convergence to refine.
+
+**Epistemic status.** This generalisation is an exploratory extension of the asymmetric dialogue pattern. It is not part of the falsifiable hypothesis defined in §1.12.5, and the specification makes no normative claim that any specific multi-component configuration produces measurable advantages over the minimal two-system dialogue. Its purpose at this stage is to document a coherent direction for operational architectures built on top of the BBP substrate, so that subsequent companion work can refer to it. The scope of that companion work — engine roles, curriculum differentiation methodology, aggregation policies, dial control, iterative loop semantics, evaluation methodology, and cost analysis — is sketched in Appendix I.3.
 
 ---
 
@@ -7696,9 +7710,37 @@ The following companion documents are scoped for future development. They do NOT
 
 **Blocking:** This document blocks production deployment recommendations. It does NOT block v1.0-final.
 
+### I.3 BBP Multi-Engine Cognitive Architectures
+
+**Purpose:** Specify configurations and protocols for BBP-native cognitive systems that combine a primary Core Engine with a matrix of smaller, differentially-trained Core Engines, mediated internally by BBP binary streams and modulated by an explicit creativity/precision aggregation dial. This companion document operationalises the exploratory generalisation introduced in §1.12.6 and does not modify any normative claim of the base specification.
+
+**Scope:**
+
+| Topic | Description |
+|-------|-------------|
+| Engine roles | Normative definition of primary Core Engine (deliberative + moderator + participant), matrix Core Engines (lightweight, curriculum-differentiated), Frontier Translator (boundary only), and boundary LLM (executive integration with the human interface) |
+| Curriculum differentiation | Methodology for producing N differentiated training corpora from a common source through summary curation; conditions under which differentiation produces useful uncorrelated variance rather than redundant or merely noisy ensembles; calibration band for matrix-engine fidelity (competent enough to convey meaning, limited enough to preserve divergence); minimum and maximum useful N |
+| Intra-system BBP protocol | Application of the Layer 3 inter-agent protocol (§1.2) to internal engine-to-engine communication; query distribution from primary engine to matrix; response collection format; absence of FT round-trip and the resulting bandwidth and latency consequences |
+| Aggregation policies | Normative definition of the convergence and divergence regimes; aggregation functions for each regime (vote-based, embedding-centroid, learned aggregator) and preservation criteria for divergence (clustering in BBP embedding space, extremum retention, minimum mutual distance among retained candidates) |
+| Dial control | Interface for setting the creativity/precision dial; static configuration vs. adaptive control by the boundary LLM; per-iteration modulation in iterative loops; the double-diamond pattern as a default operational template |
+| Iterative loop semantics | Termination criteria for the boundary LLM's iterative consultation; memory of prior iterations and prevention of re-suggestion of discarded candidates; protocol for re-formulation between iterations |
+| Evaluation methodology | Benchmarks distinct from the reasoning benchmarks of Appendix H: divergent-thinking tasks (Alternative Uses, Remote Associates), originality-vs-fluency metrics (Guilford), cross-domain insight tasks, and blinded human evaluation comparing LLM-only against LLM + matrix configurations on exploratory generation tasks |
+| Cost analysis | Quantitative comparison of per-query cost across configurations (single Core Engine, asymmetric dialogue, multi-engine with matrix), including the regime where quantised matrix engines run on consumer hardware; trade-off analysis between iteration count, dial setting, and answer quality |
+
+**Blocking:** This document blocks the operational deployment of multi-engine BBP cognitive architectures and the empirical evaluation of the creativity/precision dial. It does NOT block v1.0-final and does NOT modify any falsifiability claim defined in §1.12.5.
+
 ---
 
 ## Appendix J: Changelog History
+
+### Changelog (r40 → r41)
+
+Exploratory extension pass. Adds a non-normative generalisation of the asymmetric dialogue pattern and a corresponding companion document stub. No normative content is modified; no falsifiability claim of §1.12.5 is altered.
+
+| ID | Change | Section | Description |
+|----|--------|---------|-------------|
+| E-1 | §1.12.6: multi-component generalisation and the creativity/precision dial | §1.12.6 (new) | EXPLORATORY: New subsection added to §1.12 documenting the generalisation of the asymmetric dialogue pattern (§1.12.4) to multi-engine architectures with a primary Core Engine, a matrix of smaller curriculum-differentiated Core Engines, intra-system BBP-binary deliberation (Layer 3 protocol applied internally), and an explicit creativity/precision aggregation dial. Marked explicitly as exploratory extension; not part of the falsifiable hypothesis of §1.12.5. Operational scope deferred to Appendix I.3. |
+| E-2 | Appendix I.3: BBP Multi-Engine Cognitive Architectures | Appendix I.3 (new) | EXPLORATORY: New companion document stub describing the scope of a future operational specification for multi-engine BBP cognitive architectures. Topics: engine roles, curriculum differentiation methodology, intra-system BBP protocol application, aggregation policies for convergence and divergence regimes, dial control, iterative loop semantics, evaluation methodology (divergent-thinking benchmarks distinct from Appendix H), and cost analysis. Does not block v1.0-final and does not modify any falsifiability claim. |
 
 ### Changelog (r38 → r39)
 
